@@ -61,7 +61,8 @@ export const AnnouncementSection: React.FC<AnnouncementSectionProps> = ({
       onRefresh();
     } catch (err) {
       console.error(err);
-      setMessage({ type: 'error', text: 'Gagal merilis pengumuman.' });
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      setMessage({ type: 'error', text: `Gagal merilis pengumuman: ${errorMsg}` });
     } finally {
       setLoading(false);
     }
@@ -77,6 +78,8 @@ export const AnnouncementSection: React.FC<AnnouncementSectionProps> = ({
       onRefresh();
     } catch (err) {
       console.error(err);
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      setMessage({ type: 'error', text: `Gagal menghapus pengumuman: ${errorMsg}` });
     }
   };
 

@@ -99,8 +99,10 @@ export async function checkAndSeedDatabase() {
 
     if (paySnap.empty && residentsList.length > 0) {
       // Create some historical payments
-      const initialPayments: Omit<DuesPayment, 'id'>[] = [
-        {
+      const initialPayments: Omit<DuesPayment, 'id'>[] = [];
+      
+      if (residentsList[0]) {
+        initialPayments.push({
           residentId: residentsList[0].id,
           residentName: residentsList[0].name,
           houseNumber: residentsList[0].houseNumber,
@@ -111,8 +113,8 @@ export async function checkAndSeedDatabase() {
           paymentDate: new Date(2026, 5, 5).toISOString(),
           status: "Selesai",
           notes: "Pembayaran lunas iuran Juni"
-        },
-        {
+        });
+        initialPayments.push({
           residentId: residentsList[0].id,
           residentName: residentsList[0].name,
           houseNumber: residentsList[0].houseNumber,
@@ -123,8 +125,11 @@ export async function checkAndSeedDatabase() {
           paymentDate: new Date(2026, 5, 5).toISOString(),
           status: "Selesai",
           notes: "Iuran Kebersihan Juni"
-        },
-        {
+        });
+      }
+      
+      if (residentsList[1]) {
+        initialPayments.push({
           residentId: residentsList[1].id,
           residentName: residentsList[1].name,
           houseNumber: residentsList[1].houseNumber,
@@ -135,8 +140,11 @@ export async function checkAndSeedDatabase() {
           paymentDate: new Date(2026, 5, 7).toISOString(),
           status: "Selesai",
           notes: "Dues June"
-        },
-        {
+        });
+      }
+      
+      if (residentsList[2]) {
+        initialPayments.push({
           residentId: residentsList[2].id,
           residentName: residentsList[2].name,
           houseNumber: residentsList[2].houseNumber,
@@ -147,8 +155,11 @@ export async function checkAndSeedDatabase() {
           paymentDate: new Date(2026, 5, 10).toISOString(),
           status: "Selesai",
           notes: "Dana sosial bencana merapi"
-        },
-        {
+        });
+      }
+      
+      if (residentsList[3]) {
+        initialPayments.push({
           residentId: residentsList[3].id,
           residentName: residentsList[3].name,
           houseNumber: residentsList[3].houseNumber,
@@ -159,8 +170,8 @@ export async function checkAndSeedDatabase() {
           paymentDate: new Date(2026, 5, 12).toISOString(),
           status: "Pending",
           notes: "Iuran pembangunan gapura"
-        }
-      ];
+        });
+      }
 
       for (const pay of initialPayments) {
         await addDoc(payCol, pay);

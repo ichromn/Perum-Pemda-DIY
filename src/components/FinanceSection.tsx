@@ -89,7 +89,8 @@ export const FinanceSection: React.FC<FinanceSectionProps> = ({
       onRefresh();
     } catch (err) {
       console.error(err);
-      setMessage({ type: 'error', text: 'Gagal menyimpan transaksi keuangan.' });
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      setMessage({ type: 'error', text: `Gagal menyimpan transaksi keuangan: ${errorMsg}` });
     } finally {
       setLoading(false);
     }
@@ -106,6 +107,8 @@ export const FinanceSection: React.FC<FinanceSectionProps> = ({
       onRefresh();
     } catch (err) {
       console.error(err);
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      setMessage({ type: 'error', text: `Gagal menghapus catatan keuangan: ${errorMsg}` });
     }
   };
 

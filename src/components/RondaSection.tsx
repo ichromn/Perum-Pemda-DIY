@@ -66,7 +66,8 @@ export const RondaSection: React.FC<RondaSectionProps> = ({
       onRefresh();
     } catch (err) {
       console.error(err);
-      setMessage({ type: 'error', text: 'Gagal mengupdate jadwal ronda.' });
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      setMessage({ type: 'error', text: `Gagal mengupdate jadwal ronda: ${errorMsg}` });
     } finally {
       setLoading(false);
     }
@@ -90,7 +91,8 @@ export const RondaSection: React.FC<RondaSectionProps> = ({
       onRefresh();
     } catch (err) {
       console.error(err);
-      setMessage({ type: 'error', text: 'Gagal menghapus petugas ronda.' });
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      setMessage({ type: 'error', text: `Gagal menghapus petugas ronda: ${errorMsg}` });
     }
   };
 

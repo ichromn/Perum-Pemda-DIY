@@ -92,7 +92,8 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
       onRefresh();
     } catch (error) {
       console.error("Error writing resident: ", error);
-      setMessage({ type: 'error', text: 'Gagal memproses data. Silakan coba lagi.' });
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      setMessage({ type: 'error', text: `Gagal memproses data: ${errorMsg}. Silakan coba lagi.` });
     } finally {
       setLoading(false);
     }

@@ -120,7 +120,8 @@ export const DuesSection: React.FC<DuesSectionProps> = ({
       onRefresh();
     } catch (err) {
       console.error("Error logging dues payment: ", err);
-      setMessage({ type: 'error', text: 'Gagal mengajukan iuran. Silakan coba kembali.' });
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      setMessage({ type: 'error', text: `Gagal mengajukan iuran: ${errorMsg}. Silakan coba kembali.` });
     } finally {
       setLoading(false);
     }
