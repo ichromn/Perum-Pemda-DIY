@@ -202,9 +202,11 @@ export const DuesSection: React.FC<DuesSectionProps> = ({
 
         <button
           onClick={() => setIsFormOpen(!isFormOpen)}
-          className="flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-sm font-semibold transition-all shadow-sm"
+          className={`flex items-center justify-center gap-1.5 px-4 py-2 text-white rounded-lg text-sm font-semibold transition-all shadow-sm ${
+            isAdmin ? 'bg-emerald-700 hover:bg-emerald-800' : 'bg-amber-600 hover:bg-amber-700'
+          }`}
         >
-          <CreditCard size={16} /> {isFormOpen ? 'Tutup Formulir' : 'Bayar Iuran Rutin'}
+          <CreditCard size={16} /> {isFormOpen ? 'Tutup Formulir' : (isAdmin ? 'Catat Pembayaran Iuran' : 'Lapor Bayar Iuran Mandiri')}
         </button>
       </div>
 
@@ -460,7 +462,7 @@ export const DuesSection: React.FC<DuesSectionProps> = ({
                       </span>
                     </td>
                     <td className="p-4 text-right">
-                      <div className="flex justify-end gap-1.5">
+                      <div className="flex justify-end items-center gap-1.5">
                         {pay.status === 'Pending' && isAdmin && (
                           <>
                             <button
@@ -479,10 +481,20 @@ export const DuesSection: React.FC<DuesSectionProps> = ({
                             </button>
                           </>
                         )}
+                        {pay.status === 'Pending' && !isAdmin && (
+                          <span className="text-[10px] font-medium text-amber-700 bg-amber-50 border border-amber-200/55 rounded-md px-2 py-0.5">
+                            Menunggu Verifikasi Pengurus
+                          </span>
+                        )}
+                        {pay.status !== 'Pending' && !isAdmin && (
+                          <span className="text-[10px] font-medium text-slate-400 bg-slate-50 border border-slate-200/55 rounded-md px-2 py-0.5">
+                            Terkunci
+                          </span>
+                        )}
                         {isAdmin && (
                           <button
                             onClick={() => handleDeletePayment(pay.id)}
-                            className="p-1 hover:bg-rose-50 rounded text-slate-400 hover:text-rose-600 transition-colors"
+                            className="p-1.5 hover:bg-rose-50 rounded text-slate-400 hover:text-rose-600 transition-colors ml-1"
                             title="Hapus Record"
                           >
                             ✕

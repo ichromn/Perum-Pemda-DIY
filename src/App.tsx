@@ -25,12 +25,14 @@ import {
   Sparkles, 
   MapPin, 
   PhoneCall,
-  Loader2
+  Loader2,
+  Info
 } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('overview');
-  const [isAdmin, setIsAdmin] = useState<boolean>(true); // Default to admin/pengurus mode for full interactive capability
+  const [isAdmin, setIsAdmin] = useState<boolean>(false); // Default to viewer/penonton mode initially
+  const [adminUsernameInput, setAdminUsernameInput] = useState<string>('');
   const [adminPasswordInput, setAdminPasswordInput] = useState<string>('');
   const [showAdminLogin, setShowAdminLogin] = useState<boolean>(false);
 
@@ -124,12 +126,15 @@ export default function App() {
 
   const handleAdminVerify = (e: React.FormEvent) => {
     e.preventDefault();
-    if (adminPasswordInput === 'pemda123' || adminPasswordInput === 'admin') {
+    const user = adminUsernameInput.trim();
+    const pass = adminPasswordInput;
+    if (user === 'admin' && (pass === 'perumpemdaDIY#' || pass === 'pemda123')) {
       setIsAdmin(true);
       setShowAdminLogin(false);
+      setAdminUsernameInput('');
       setAdminPasswordInput('');
     } else {
-      alert('Sandi salah! Gunakan sandi "pemda123" untuk mencoba.');
+      alert('Username atau Password Pengurus salah! Silakan periksa kembali.');
     }
   };
 
@@ -201,21 +206,37 @@ export default function App() {
             
             <form onSubmit={handleAdminVerify} className="space-y-4">
               <p className="text-xs text-slate-500 leading-relaxed">
-                Silakan masukkan sandi admin untuk membuka hak akses tambah/edit/verifikasi iuran rutin dan laporan keuangan.
+                Silakan masuk menggunakan akun pengurus untuk mengelola data warga, iuran, jadwal ronda, pengumuman, dan keuangan.
               </p>
-              
+
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-600 block">Sandi Akses</label>
+                <label className="text-xs font-bold text-slate-600 block">Nama Pengguna (Username)</label>
                 <input
-                  type="password"
-                  placeholder="Ketik: pemda123"
-                  value={adminPasswordInput}
-                  onChange={(e) => setAdminPasswordInput(e.target.value)}
+                  type="text"
+                  placeholder="Masukkan: admin"
+                  value={adminUsernameInput}
+                  onChange={(e) => setAdminUsernameInput(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-700/50"
                   autoFocus
                   required
                 />
-                <span className="text-[10px] text-slate-400 font-mono block pt-1">Sandi Uji Coba: <strong>pemda123</strong></span>
+              </div>
+              
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-600 block">Kata Sandi (Password)</label>
+                <input
+                  type="password"
+                  placeholder="Masukkan password"
+                  value={adminPasswordInput}
+                  onChange={(e) => setAdminPasswordInput(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-700/50"
+                  required
+                />
+              </div>
+
+              <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] space-y-1 text-slate-500 font-mono">
+                <div>• Username: <strong className="text-slate-800 font-sans">admin</strong></div>
+                <div>• Password: <strong className="text-slate-800 font-sans">perumpemdaDIY#</strong></div>
               </div>
 
               <div className="flex justify-end gap-2 pt-2">
@@ -223,6 +244,7 @@ export default function App() {
                   type="button"
                   onClick={() => {
                     setShowAdminLogin(false);
+                    setAdminUsernameInput('');
                     setAdminPasswordInput('');
                   }}
                   className="px-3.5 py-1.5 border border-slate-200 hover:bg-slate-50 rounded-lg text-xs font-semibold text-slate-600 transition-colors"
@@ -265,6 +287,52 @@ export default function App() {
           </div>
         ) : (
           <>
+            {/* Access Mode Notice Banner */}
+            {!isAdmin ? (
+              <div className="bg-gradient-to-r from-amber-50 to-amber-100/60 border border-amber-200/80 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                <div className="flex gap-3">
+                  <div className="p-2 bg-amber-500/10 text-amber-800 rounded-lg flex items-center justify-center self-start sm:self-center">
+                    <Info size={18} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-800 font-serif">Mode Penonton (Warga / Tamu) Aktif</h4>
+                    <p className="text-slate-600 text-xs leading-relaxed">
+                      Anda sedang melihat portal dalam status <strong>Penonton</strong>. Anda dapat mengirimkan pendaftaran warga baru mandiri, melaporkan pembayaran iuran bulanan Anda, dan melihat transparansi kas. Untuk fitur edit/delete & kelola sistem penuh, laksanakan <strong>Login Pengurus</strong>.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowAdminLogin(true)}
+                  className="flex-shrink-0 bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition-colors shadow-xs"
+                >
+                  Masuk Mode Pengurus
+                </button>
+              </div>
+            ) : (
+              <div className="bg-gradient-to-r from-emerald-50 to-emerald-100/60 border border-emerald-200/80 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                <div className="flex gap-3">
+                  <div className="p-2 bg-emerald-500/10 text-emerald-800 rounded-lg flex items-center justify-center self-start sm:self-center animate-pulse">
+                    <ShieldCheck size={18} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-800 font-serif">🔑 Mode Pengurus (Administrator) Aktif</h4>
+                    <p className="text-slate-600 text-xs leading-relaxed">
+                      Selamat datang, Pengurus. Anda kini memiliki hak penuh untuk menyetujui/menolak pengajuan iuran warga, memplot jadwal ronda resmi, merilis pengumuman, dan menambah/mengedit database warga secara langsung.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setIsAdmin(false);
+                    alert('Anda telah keluar dari Mode Pengurus.');
+                  }}
+                  className="flex-shrink-0 bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-2 rounded-lg text-xs transition-colors shadow-xs"
+                >
+                  Keluar Mode Pengurus
+                </button>
+              </div>
+            )}
+
             {/* Visual Navigation Tabs */}
             <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-100 shadow-sm overflow-x-auto no-scrollbar">
               

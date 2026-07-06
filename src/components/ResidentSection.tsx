@@ -24,6 +24,7 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
   const [houseNumber, setHouseNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [familySize, setFamilySize] = useState<number>(3);
+  const [familyMembers, setFamilyMembers] = useState('');
   const [status, setStatus] = useState<'Aktif' | 'Pasif'>('Aktif');
   const [occupation, setOccupation] = useState('');
 
@@ -35,6 +36,7 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
     setHouseNumber('');
     setPhoneNumber('');
     setFamilySize(3);
+    setFamilyMembers('');
     setStatus('Aktif');
     setOccupation('');
     setEditingId(null);
@@ -45,6 +47,7 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
     setHouseNumber(resident.houseNumber);
     setPhoneNumber(resident.phoneNumber);
     setFamilySize(resident.familySize);
+    setFamilyMembers(resident.familyMembers || '');
     setStatus(resident.status);
     setOccupation(resident.occupation);
     setEditingId(resident.id);
@@ -67,6 +70,7 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
         houseNumber,
         phoneNumber,
         familySize,
+        familyMembers,
         status,
         occupation,
         registeredAt: new Date().toISOString()
@@ -137,7 +141,9 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
             resetForm();
             setIsFormOpen(!isFormOpen);
           }}
-          className="flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-sm font-semibold transition-all shadow-sm"
+          className={`flex items-center justify-center gap-1.5 px-4 py-2 text-white rounded-lg text-sm font-semibold transition-all shadow-sm ${
+            isAdmin ? 'bg-emerald-700 hover:bg-emerald-800' : 'bg-amber-600 hover:bg-amber-700'
+          }`}
         >
           {isFormOpen ? (
             <>
@@ -145,7 +151,7 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
             </>
           ) : (
             <>
-              <UserPlus size={16} /> Daftar Warga Baru
+              <UserPlus size={16} /> {isAdmin ? 'Tambah Warga Baru (Pengurus)' : 'Daftar Warga Mandiri'}
             </>
           )}
         </button>
@@ -237,6 +243,18 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
                 <option value="Pasif">Pasif (Kontrak / Kos / Tidak Menetap)</option>
               </select>
             </div>
+
+            <div className="space-y-1 md:col-span-2">
+              <label className="text-xs font-semibold text-slate-600 block">Nama Anggota Keluarga Lainnya (Jika Ada)</label>
+              <textarea
+                placeholder="Tuliskan nama anggota keluarga yang tinggal di rumah ini. Contoh: Sri Purwati (Istri), Dimas (Anak), Shinta (Anak)"
+                value={familyMembers}
+                onChange={(e) => setFamilyMembers(e.target.value)}
+                rows={2}
+                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700/50 bg-slate-50 font-sans"
+              />
+              <span className="text-[10px] text-slate-400 font-medium">Sebutkan nama dan hubungan keluarga untuk memudahkan koordinasi warga.</span>
+            </div>
           </div>
 
           <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
@@ -302,7 +320,18 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
               ) : (
                 filteredResidents.map((res) => (
                   <tr key={res.id} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="p-4 font-semibold text-slate-800">{res.name}</td>
+                    <td className="p-4">
+                      <div className="font-semibold text-slate-800">{res.name}</div>
+                      {res.familyMembers ? (
+                        <div className="text-xs text-emerald-600 font-medium mt-1">
+                          👪 Anggota: {res.familyMembers}
+                        </div>
+                      ) : (
+                        <div className="text-xs text-slate-400 italic mt-1">
+                          Belum mencantumkan nama anggota kel.
+                        </div>
+                      )}
+                    </td>
                     <td className="p-4 font-mono font-bold text-emerald-800">{res.houseNumber}</td>
                     <td className="p-4 text-slate-600">{res.phoneNumber}</td>
                     <td className="p-4 text-slate-600">{res.occupation || '-'}</td>
@@ -315,32 +344,28 @@ export const ResidentSection: React.FC<ResidentSectionProps> = ({
                       </span>
                     </td>
                     <td className="p-4 text-right">
-                      <div className="flex justify-end gap-1.5">
-                        <button
-                          onClick={() => handleEditClick(res)}
-                          title="Edit"
-                          className="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-emerald-700 transition-colors"
-                        >
-                          <Edit2 size={14} />
-                        </button>
-                        {isAdmin ? (
+                      {isAdmin ? (
+                        <div className="flex justify-end gap-1.5">
+                          <button
+                            onClick={() => handleEditClick(res)}
+                            title="Edit Data Warga"
+                            className="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-emerald-700 transition-colors"
+                          >
+                            <Edit2 size={14} />
+                          </button>
                           <button
                             onClick={() => handleDelete(res.id, res.name)}
-                            title="Hapus"
+                            title="Hapus Data Warga"
                             className="p-1.5 hover:bg-rose-50 rounded text-slate-400 hover:text-rose-600 transition-colors"
                           >
                             <Trash2 size={14} />
                           </button>
-                        ) : (
-                          <button
-                            disabled
-                            title="Hapus (Admin Saja)"
-                            className="p-1.5 opacity-30 text-slate-400 cursor-not-allowed"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        )}
-                      </div>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-slate-400 italic font-medium bg-slate-50 px-2 py-1 rounded border border-slate-100 select-none">
+                          Terkunci
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))

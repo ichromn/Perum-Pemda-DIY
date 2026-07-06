@@ -4,6 +4,7 @@ export interface Resident {
   houseNumber: string;
   phoneNumber: string;
   familySize: number;
+  familyMembers?: string; // Names of family members
   status: 'Aktif' | 'Pasif';
   occupation: string;
   registeredAt: string; // ISO string
