@@ -106,8 +106,8 @@ export async function checkAndSeedDatabase() {
           residentId: residentsList[0].id,
           residentName: residentsList[0].name,
           houseNumber: residentsList[0].houseNumber,
-          type: "Keamanan",
-          amount: 40000,
+          type: "Dana Sosial",
+          amount: 20000,
           month: 6,
           year: 2026,
           paymentDate: new Date(2026, 5, 5).toISOString(),
@@ -133,8 +133,8 @@ export async function checkAndSeedDatabase() {
           residentId: residentsList[1].id,
           residentName: residentsList[1].name,
           houseNumber: residentsList[1].houseNumber,
-          type: "Keamanan",
-          amount: 40000,
+          type: "Kebersihan",
+          amount: 25000,
           month: 6,
           year: 2026,
           paymentDate: new Date(2026, 5, 7).toISOString(),
@@ -148,7 +148,7 @@ export async function checkAndSeedDatabase() {
           residentId: residentsList[2].id,
           residentName: residentsList[2].name,
           houseNumber: residentsList[2].houseNumber,
-          type: "Sosial",
+          type: "Dana Sosial",
           amount: 20000,
           month: 6,
           year: 2026,
@@ -163,13 +163,13 @@ export async function checkAndSeedDatabase() {
           residentId: residentsList[3].id,
           residentName: residentsList[3].name,
           houseNumber: residentsList[3].houseNumber,
-          type: "Kas Paguyuban",
-          amount: 50000,
+          type: "Simpan Pinjam",
+          amount: 100000,
           month: 6,
           year: 2026,
           paymentDate: new Date(2026, 5, 12).toISOString(),
           status: "Pending",
-          notes: "Iuran pembangunan gapura"
+          notes: "Pembayaran Simpanan Berjangka"
         });
       }
 

@@ -11,6 +11,7 @@ import { DuesSection } from './components/DuesSection';
 import { AnnouncementSection } from './components/AnnouncementSection';
 import { RondaSection } from './components/RondaSection';
 import { FinanceSection } from './components/FinanceSection';
+import { SavingsLoansSection } from './components/SavingsLoansSection';
 
 // Icons
 import { 
@@ -26,7 +27,8 @@ import {
   MapPin, 
   PhoneCall,
   Loader2,
-  Info
+  Info,
+  Coins
 } from 'lucide-react';
 
 export default function App() {
@@ -377,6 +379,17 @@ export default function App() {
                 <TrendingUp size={16} /> Keuangan Kas
               </button>
 
+              <button
+                onClick={() => setActiveTab('savingsLoans')}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+                  activeTab === 'savingsLoans'
+                    ? 'bg-emerald-800 text-amber-300 shadow-sm'
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }`}
+              >
+                <Coins size={16} /> Simpan Pinjam
+              </button>
+
             </div>
 
             {/* Tab Contents */}
@@ -430,6 +443,14 @@ export default function App() {
               {activeTab === 'finance' && (
                 <FinanceSection 
                   transactions={transactions}
+                  isAdmin={isAdmin}
+                  onRefresh={forceTabRefresh}
+                />
+              )}
+
+              {activeTab === 'savingsLoans' && (
+                <SavingsLoansSection 
+                  residents={residents}
                   isAdmin={isAdmin}
                   onRefresh={forceTabRefresh}
                 />

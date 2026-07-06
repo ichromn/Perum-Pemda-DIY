@@ -15,12 +15,34 @@ export interface DuesPayment {
   residentId: string;
   residentName: string;
   houseNumber: string;
-  type: 'Kebersihan' | 'Keamanan' | 'Sosial' | 'Kas Paguyuban' | 'Lainnya';
+  type: 'Dana Sosial' | 'Kebersihan' | 'Simpan Pinjam' | 'Lainnya';
   amount: number;
   month: number; // 1 - 12
   year: number;
   paymentDate: string; // ISO string
   status: 'Pending' | 'Selesai' | 'Ditolak';
+  notes?: string;
+}
+
+export interface Loan {
+  id: string;
+  residentId: string;
+  residentName: string;
+  houseNumber: string;
+  amount: number;             // Total loan amount
+  remainingAmount: number;    // Remaining amount to pay
+  loanDate: string;           // ISO date
+  dueDate?: string;           // Optional due date
+  status: 'Belum Lunas' | 'Lunas';
+  notes?: string;
+}
+
+export interface LoanInstallment {
+  id: string;
+  loanId: string;
+  residentName: string;
+  amount: number;
+  paymentDate: string;        // ISO date
   notes?: string;
 }
 

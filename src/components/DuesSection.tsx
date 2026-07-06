@@ -27,8 +27,8 @@ export const DuesSection: React.FC<DuesSectionProps> = ({
   // Form states
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedResidentId, setSelectedResidentId] = useState('');
-  const [duesType, setDuesType] = useState<'Kebersihan' | 'Keamanan' | 'Sosial' | 'Kas Paguyuban' | 'Lainnya'>('Keamanan');
-  const [amount, setAmount] = useState<number>(40000);
+  const [duesType, setDuesType] = useState<'Dana Sosial' | 'Kebersihan' | 'Simpan Pinjam' | 'Lainnya'>('Kebersihan');
+  const [amount, setAmount] = useState<number>(25000);
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const [notes, setNotes] = useState('');
@@ -46,10 +46,9 @@ export const DuesSection: React.FC<DuesSectionProps> = ({
 
   const getDuesStandardAmount = (type: string) => {
     switch (type) {
-      case 'Keamanan': return 40000;
       case 'Kebersihan': return 25000;
-      case 'Sosial': return 20000;
-      case 'Kas Paguyuban': return 30000;
+      case 'Dana Sosial': return 20000;
+      case 'Simpan Pinjam': return 50000;
       default: return 50000;
     }
   };
@@ -253,10 +252,9 @@ export const DuesSection: React.FC<DuesSectionProps> = ({
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700/50 bg-slate-50"
                 required
               >
-                <option value="Keamanan">Keamanan (Rp 40.000)</option>
+                <option value="Dana Sosial">Dana Sosial (Rp 20.000)</option>
                 <option value="Kebersihan">Kebersihan (Rp 25.000)</option>
-                <option value="Sosial">Sosial (Rp 20.000)</option>
-                <option value="Kas Paguyuban">Kas Paguyuban (Rp 30.000)</option>
+                <option value="Simpan Pinjam">Simpan Pinjam (Rp 50.000)</option>
                 <option value="Lainnya">Lainnya (Manual)</option>
               </select>
             </div>
@@ -360,10 +358,9 @@ export const DuesSection: React.FC<DuesSectionProps> = ({
           className="px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-emerald-700"
         >
           <option value="">Semua Jenis Iuran</option>
-          <option value="Keamanan">Keamanan</option>
+          <option value="Dana Sosial">Dana Sosial</option>
           <option value="Kebersihan">Kebersihan</option>
-          <option value="Sosial">Sosial</option>
-          <option value="Kas Paguyuban">Kas Paguyuban</option>
+          <option value="Simpan Pinjam">Simpan Pinjam</option>
           <option value="Lainnya">Lainnya</option>
         </select>
 
@@ -436,9 +433,9 @@ export const DuesSection: React.FC<DuesSectionProps> = ({
                     </td>
                     <td className="p-4">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                        pay.type === 'Keamanan' ? 'bg-indigo-50 text-indigo-700' :
                         pay.type === 'Kebersihan' ? 'bg-emerald-50 text-emerald-700' :
-                        pay.type === 'Sosial' ? 'bg-amber-50 text-amber-700' :
+                        pay.type === 'Dana Sosial' ? 'bg-amber-50 text-amber-700' :
+                        pay.type === 'Simpan Pinjam' ? 'bg-indigo-50 text-indigo-700' :
                         'bg-slate-100 text-slate-700'
                       }`}>
                         {pay.type}
