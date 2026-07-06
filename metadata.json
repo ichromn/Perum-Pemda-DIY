@@ -1,0 +1,8 @@
+{
+  "name": "Paguyuban Perum Pemda DIY Banjardadap",
+  "description": "Aplikasi web Paguyuban Perum Pemda DIY Banjardadap dengan fitur pendaftaran warga, iuran rutin, papan pengumuman, jadwal ronda, dan laporan keuangan real-time.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
